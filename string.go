@@ -1,12 +1,16 @@
 package red
 
 import (
+	"errors"
 	gconv "github.com/og/x/conv"
 	"time"
 )
 
 
 func (c Client) SET(key Key, value string, duration time.Duration) error {
+	if duration < time.Millisecond {
+		return errors.New("gored: SET(key, value, duration) duration can not less at millisecond (" + duration.String() + ")")
+	}
 	_, err := c.DoKey(nil, SET, key, value, "PX", gconv.Int64String(duration.Milliseconds()))
 	return err
 }
@@ -22,11 +26,5 @@ func (c Client) GET(key Key) (value string, has bool, err error) {
 	if empty.IsNil == false {
 		has = true
 	}
-	return
-}
-func (c Client) DEL(keys ...Key) (length int, err error) {
-	sKeys := keysToStrings(keys)
-	_, err = c.Do(&length, DEL, sKeys...)
-	if err !=nil {return}
 	return
 }

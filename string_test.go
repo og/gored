@@ -62,5 +62,9 @@ func  TestGetSetDeL(t *testing.T) {
 			as.False(hasCode)
 			as.Equal(code, "")
 		}
+		{
+			err := c.SET(key, "a", 1)
+			as.ErrorString(err, "gored: SET(key, value, duration) duration can not less at millisecond (1ns)")
+		}
 	}
 }
