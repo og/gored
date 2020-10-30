@@ -207,5 +207,4 @@ func TestClient_RENAMENX(t *testing.T) {
 		as.Equal(newKeyExist, true)
 	}
 
-
 }
