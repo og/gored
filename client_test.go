@@ -12,7 +12,7 @@ func init () {
 	c, err = red.NewPool(red.PoolConfig{
 		Network:  "tcp",
 		Addr:     "127.0.0.1:6379",
-		Size:     10,
+		PoolSize:     10,
 		PoolOpts: nil,
 	})
 	if err != nil {panic(err)}
@@ -23,7 +23,7 @@ func TestNewClient(t *testing.T) {
 		c, err := red.NewPool(red.PoolConfig{
 			Network:  "tcp",
 			Addr:     "127.0.0.1:1111",
-			Size:     10,
+			PoolSize:     10,
 			PoolOpts: nil,
 		})
 		as.ErrorString( err, "dial tcp 127.0.0.1:1111: connect: connection refused")
@@ -33,7 +33,7 @@ func TestNewClient(t *testing.T) {
 		c, err := red.NewPool(red.PoolConfig{
 			Network:  "tcp",
 			Addr:     "127.0.0.1:6379",
-			Size:     10,
+			PoolSize:     10,
 			PoolOpts: nil,
 		})
 		as.NoError(err)
@@ -47,20 +47,19 @@ func TestClient_Ping(t *testing.T) {
 		c, err := red.NewPool(red.PoolConfig{
 			Network:  "tcp",
 			Addr:     "127.0.0.1:6379",
-			Size:     10,
+			PoolSize:     10,
 			PoolOpts: nil,
 		})
 		as.NoError(err)
-		as.NoError(c.Close())
+		as.NoError(c.Close())// 关闭后再ping
 		as.ErrorString(c.Ping(), "client is closed")
 	}
 	c, err := red.NewPool(red.PoolConfig{
 		Network:  "tcp",
 		Addr:     "127.0.0.1:6379",
-		Size:     10,
+		PoolSize:     10,
 		PoolOpts: nil,
 	})
 	as.NoError(err)
 	as.NoError(c.Ping())
-
 }

@@ -7,8 +7,8 @@ import (
 type Client struct {
 	core Connecter
 }
-func (c Client) Ping() error {
-	_, err := c.Do(PING, "hello world")
+func (c Client) Ping() (err error) {
+	_, err = c.Do(nil, PING, "hello world")
 	return err
 }
 func (c Client) Close() error {
@@ -17,11 +17,11 @@ func (c Client) Close() error {
 type PoolConfig struct {
 	Network string `eg:"tcp"`
 	Addr string `eg:"127.0.0.1:6379"`
-	Size int `eg:"10"`
+	PoolSize int `eg:"10"`
 	PoolOpts []radix.PoolOpt
 }
 func NewPool (conf PoolConfig) (c Client, err error) {
-	pool, err := radix.NewPool(conf.Network, conf.Addr, conf.Size, conf.PoolOpts...)
+	pool, err := radix.NewPool(conf.Network, conf.Addr, conf.PoolSize, conf.PoolOpts...)
 	if err != nil {return}
 	c = Client{
 		core: pool,
