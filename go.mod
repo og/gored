@@ -1,4 +1,4 @@
-module github.com/og/gored
+module github.com/og/red
 
 go 1.13
 
